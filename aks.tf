@@ -14,7 +14,6 @@ resource "azurerm_kubernetes_cluster" "example" {
   identity {
     type = "SystemAssigned"
   }
-
   tags = {
     Environment = "demo"
   }
