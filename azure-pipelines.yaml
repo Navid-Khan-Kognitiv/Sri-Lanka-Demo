@@ -47,12 +47,12 @@ stages:
       displayName: plan dev
       inputs:
         script: terraform plan -input=false
-    # - task: CmdLine@2
-    #   env:
-    #     TF_WORKSPACE: qa
-    #   displayName: plan qa
-    #   inputs:
-    #     script: terraform plan -input=false
+    - task: CmdLine@2
+      env:
+        TF_WORKSPACE: qa
+      displayName: plan qa
+      inputs:
+        script: terraform plan -input=false
     # - task: CmdLine@2
     #   env:
     #     TF_WORKSPACE: ist
@@ -101,34 +101,34 @@ stages:
             inputs:
               script: terraform apply -auto-approve
 
-# - stage: deploy_qa
-#   dependsOn:
-#   - deploy_dev
-#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-#   jobs:
-#   - deployment: qa
-#     variables:
-#     - name: TF_WORKSPACE
-#       value: qa
-#     environment:
-#       name: qa
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - checkout: self
-#           - task: CmdLine@2
-#             displayName: terraform login
-#             inputs:
-#               script: echo 'credentials "app.terraform.io" { token = "$(SL-API-KEY)" }' >$(System.DefaultWorkingDirectory)/.terraformrc
-#           - task: CmdLine@2
-#             displayName: init
-#             inputs:
-#               script: terraform init -input=false
-#           - task: CmdLine@2
-#             displayName: apply
-#             inputs:
-#               script: terraform apply -auto-approve
+- stage: deploy_qa
+  dependsOn:
+  - deploy_dev
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  jobs:
+  - deployment: qa
+    variables:
+    - name: TF_WORKSPACE
+      value: qa
+    environment:
+      name: qa
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: CmdLine@2
+            displayName: terraform login
+            inputs:
+              script: echo 'credentials "app.terraform.io" { token = "$(SL-API-KEY)" }' >$(System.DefaultWorkingDirectory)/.terraformrc
+          - task: CmdLine@2
+            displayName: init
+            inputs:
+              script: terraform init -input=false
+          - task: CmdLine@2
+            displayName: apply
+            inputs:
+              script: terraform apply -auto-approve
 
 # - stage: deploy_ist
 #   dependsOn:
