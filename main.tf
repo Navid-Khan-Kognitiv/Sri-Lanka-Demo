@@ -33,3 +33,4 @@ resource "azurerm_resource_group" "this" {
 
   tags = local.common_tags
 }
+

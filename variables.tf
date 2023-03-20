@@ -15,3 +15,8 @@ variable "env" {
   type    = string
   description = "An environment we work within"
 }
+
+variable "rg_name" {
+  type    = string
+  description = "Resource group name"
+}
